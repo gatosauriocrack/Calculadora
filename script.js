@@ -873,4 +873,18 @@
 
             document.getElementById('data-output').value = result.toFixed(2);
         }
-    
+    // ... (Todo el código actual de script.js)
+// ...
+
+// --- REGISTRO DEL SERVICE WORKER PARA PWA (Añadir al final) ---
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    // IMPORTANTE: Se ajusta la ruta del Service Worker para GitHub Pages.
+    navigator.serviceWorker.register('/Calculadora/service-worker.js', { scope: '/Calculadora/' }) 
+      .then(function(registration) {
+        console.log('ServiceWorker registrado con éxito. Scope:', registration.scope);
+      }, function(err) {
+        console.error('Fallo el registro del ServiceWorker:', err);
+      });
+  });
+}
