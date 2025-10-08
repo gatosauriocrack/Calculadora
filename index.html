@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora Funcional</title>
     
+    <link rel="manifest" href="manifest.json"> 
+    
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -286,15 +288,6 @@
                     <button id="tictactoe-reset" onclick="resetTicTacToe()">Reiniciar</button>
                 </div>
             </div>
-            
-            <div class="conversion-module" id="web-browser-module">
-                <h3>Navegador Web</h3>
-                <div class="input-group">
-                    <input type="text" id="url-input" placeholder="Ingresa una URL (ej: https://www.google.com)">
-                    <button onclick="loadURL()" class="boton-naranja-operador">Navegar</button>
-                </div>
-                <iframe id="web-frame" src="about:blank" frameborder="0"></iframe>
-            </div>
         </div>
         
         <div class="menu-flotante" id="main-menu">
@@ -329,7 +322,6 @@
             <button onclick="showConversionModule('time')">Tiempo</button>
             <button onclick="showConversionModule('data')">Datos</button>
             <span class="menu-section-title">"OTRAS OPCIONES"</span>
-            <button onclick="showWebBrowserModule()">Web</button>
             <button onclick="alert('Funcionalidad de librería en desarrollo.')">Librería</button>
         </div>
     </div>
