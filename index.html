@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Funcional</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="full-width-header">
+        <button onclick="toggleSideMenu()" id="side-menu-button">≡</button>
+        <button onclick="toggleMenu()" id="main-menu-button">⋮</button>
+    </div>
+    
+    <div class="calculadora" id="calculadora-main">
+        <div class="main-content" id="main-content">
+            <div id="calculator-view">
+                <input type="text" class="pantalla" id="display" readonly>
+                <div class="botones normal-mode" id="normal-buttons">
+                    <button class="boton-naranja-oscuro" onclick="updateDisplay('backspace')">⌫</button>
+                    <button class="boton-naranja-oscuro" onclick="updateDisplay('AC')">AC</button>
+                    <button class="boton-naranja-oscuro" onclick="updateDisplay('+/-')">+/-</button>
+                    <button class="boton-naranja-operador" onclick="updateDisplay('x')">×</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('7')">7</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('8')">8</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('9')">9</button>
+                    <button class="boton-naranja-operador" onclick="updateDisplay('+')">+</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('4')">4</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('5')">5</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('6')">6</button>
+                    <button class="boton-naranja-operador" onclick="updateDisplay('-')">-</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('1')">1</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('2')">2</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('3')">3</button>
+                    <button class="boton-naranja-operador" onclick="updateDisplay('÷')">÷</button>
+                    <button class="boton-naranja-resto" onclick="incrementCounter()">#</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('0')">0</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('.')">.</button>
+                    <button class="boton-naranja-operador" onclick="calculate()">=</button>
+                </div>
+                <div class="botones scientific-mode hidden" id="scientific-buttons">
+                    <button class="boton-naranja-resto" onclick="updateDisplay('2nd')">2nd</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('(')">(</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay(')')">)</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('%')">%</button>
+                    <button class="boton-naranja-oscuro" onclick="updateDisplay('AC')">AC</button>
+                    
+                    <button class="boton-naranja-resto" onclick="updateDisplay('1/')">1/x</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('x^2')">x²</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('x^3')">x³</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('pow(')">xⁿ</button>
+                    <button class="boton-naranja-oscuro" onclick="updateDisplay('backspace')">⌫</button>
+
+                    <button class="boton-naranja-resto" onclick="updateDisplay('sqrt(')">√</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('cbrt(')">³√</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('ln(')">ln</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('lg')">lg</button>
+                    <button class="boton-naranja-operador" onclick="updateDisplay('÷')">÷</button>
+
+                    <button class="boton-naranja-resto" onclick="updateDisplay('sin(')">sin</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('cos(')">cos</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('tan(')">tan</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('pi')">π</button>
+                    <button class="boton-naranja-operador" onclick="updateDisplay('x')">×</button>
+
+                    <button class="boton-naranja-resto" onclick="updateDisplay('7')">7</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('8')">8</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('9')">9</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('!')">x!</button>
+                    <button class="boton-naranja-operador" onclick="updateDisplay('-')">-</button>
+
+                    <button class="boton-naranja-resto" onclick="updateDisplay('4')">4</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('5')">5</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('6')">6</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('rad(')">rad</button>
+                    <button class="boton-naranja-operador" onclick="updateDisplay('+')">+</button>
+
+                    <button class="boton-naranja-resto" onclick="updateDisplay('1')">1</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('2')">2</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('3')">3</button>
+                    <button class="boton-naranja-oscuro" onclick="updateDisplay('+/-')">+/-</button>
+                    <button class="boton-naranja-operador" onclick="calculate()">=</button>
+
+                    <button class="boton-naranja-resto" onclick="updateDisplay('10^')">10ⁿ</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('0')">0</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('.')">.</button>
+                    <button class="boton-naranja-resto" onclick="updateDisplay('mc')">mc</button>
+                    <button class="boton-vacio"></button> 
+                </div>
+            </div>
+
+            <div class="conversion-module" id="volume-module">
+                <h3>Volumen</h3>
+                <div class="input-group">
+                    <label for="volume-input">Valor:</label>
+                    <input type="number" id="volume-input">
+                    <select id="volume-from">
+                        <option value="liters">Litros</option>
+                        <option value="milliliters">Mililitros</option>
+                        <option value="cubic_meters">Metros Cúbicos</option>
+                        <option value="gallons">Galones (US)</option>
+                        <option value="fluid_ounces">Onzas fluidas (US)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="volume-output">Resultado:</label>
+                    <input type="text" id="volume-output" readonly>
+                    <select id="volume-to">
+                        <option value="liters">Litros</option>
+                        <option value="milliliters">Mililitros</option>
+                        <option value="cubic_meters">Metros Cúbicos</option>
+                        <option value="gallons">Galones (US)</option>
+                        <option value="fluid_ounces">Onzas fluidas (US)</option>
+                    </select>
+                </div>
+                <button class="boton-naranja-operador" onclick="convertVolume()">Convertir</button>
+            </div>
+
+            <div class="conversion-module" id="mass-module">
+                <h3>Peso y Masa</h3>
+                <div class="input-group">
+                    <label for="mass-input">Valor:</label>
+                    <input type="number" id="mass-input">
+                    <select id="mass-from">
+                        <option value="kg">Kilogramos</option>
+                        <option value="g">Gramos</option>
+                        <option value="mg">Miligramos</option>
+                        <option value="lbs">Libras</option>
+                        <option value="oz">Onzas</option>
+                        <option value="tons">Toneladas</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="mass-output">Resultado:</label>
+                    <input type="text" id="mass-output" readonly>
+                    <select id="mass-to">
+                        <option value="kg">Kilogramos</option>
+                        <option value="g">Gramos</option>
+                        <option value="mg">Miligramos</option>
+                        <option value="lbs">Libras</option>
+                        <option value="oz">Onzas</option>
+                        <option value="tons">Toneladas</option>
+                    </select>
+                </div>
+                <button class="boton-naranja-operador" onclick="convertMass()">Convertir</button>
+            </div>
+
+            <div class="conversion-module" id="length-module">
+                <h3>Longitud</h3>
+                <div class="input-group">
+                    <label for="length-input">Valor:</label>
+                    <input type="number" id="length-input">
+                    <select id="length-from">
+                        <option value="km">Kilómetros</option>
+                        <option value="m">Metros</option>
+                        <option value="cm">Centímetros</option>
+                        <option value="mm">Milímetros</option>
+                        <option value="mi">Millas</option>
+                        <option value="ft">Pies</option>
+                        <option value="in">Pulgadas</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="length-output">Resultado:</label>
+                    <input type="text" id="length-output" readonly>
+                    <select id="length-to">
+                        <option value="km">Kilómetros</option>
+                        <option value="m">Metros</option>
+                        <option value="cm">Centímetros</option>
+                        <option value="mm">Milímetros</option>
+                        <option value="mi">Millas</option>
+                        <option value="ft">Pies</option>
+                        <option value="in">Pulgadas</option>
+                    </select>
+                </div>
+                <button class="boton-naranja-operador" onclick="convertLength()">Convertir</button>
+            </div>
+
+            <div class="conversion-module" id="temperature-module">
+                <h3>Temperatura</h3>
+                <div class="input-group">
+                    <label for="temp-input">Valor:</label>
+                    <input type="number" id="temp-input">
+                    <select id="temp-from">
+                        <option value="celsius">Celsius</option>
+                        <option value="fahrenheit">Fahrenheit</option>
+                        <option value="kelvin">Kelvin</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="temp-output">Resultado:</label>
+                    <input type="text" id="temp-output" readonly>
+                    <select id="temp-to">
+                        <option value="celsius">Celsius</option>
+                        <option value="fahrenheit">Fahrenheit</option>
+                        <option value="kelvin">Kelvin</option>
+                    </select>
+                </div>
+                <button class="boton-naranja-operador" onclick="convertTemperature()">Convertir</button>
+            </div>
+
+            <div class="conversion-module" id="time-module">
+                <h3>Tiempo</h3>
+                <div class="input-group">
+                    <label for="time-input">Valor:</label>
+                    <input type="number" id="time-input">
+                    <select id="time-from">
+                        <option value="seconds">Segundos</option>
+                        <option value="minutes">Minutos</option>
+                        <option value="hours">Horas</option>
+                        <option value="days">Días</option>
+                        <option value="years">Años</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="time-output">Resultado:</label>
+                    <input type="text" id="time-output" readonly>
+                    <select id="time-to">
+                        <option value="seconds">Segundos</option>
+                        <option value="minutes">Minutos</option>
+                        <option value="hours">Horas</option>
+                        <option value="days">Días</option>
+                        <option value="years">Años</option>
+                    </select>
+                </div>
+                <button class="boton-naranja-operador" onclick="convertTime()">Convertir</button>
+            </div>
+
+            <div class="conversion-module" id="data-module">
+                <h3>Datos</h3>
+                <div class="input-group">
+                    <label for="data-input">Valor:</label>
+                    <input type="number" id="data-input">
+                    <select id="data-from">
+                        <option value="bytes">Bytes</option>
+                        <option value="kb">Kilobytes</option>
+                        <option value="mb">Megabytes</option>
+                        <option value="gb">Gigabytes</option>
+                        <option value="tb">Terabytes</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="data-output">Resultado:</label>
+                    <input type="text" id="data-output" readonly>
+                    <select id="data-to">
+                        <option value="bytes">Bytes</option>
+                        <option value="kb">Kilobytes</option>
+                        <option value="mb">Megabytes</option>
+                        <option value="gb">Gigabytes</option>
+                        <option value="tb">Terabytes</option>
+                    </select>
+                </div>
+                <button class="boton-naranja-operador" onclick="convertData()">Convertir</button>
+            </div>
+
+            <div class="conversion-module" id="image-vault-module">
+                <div class="vault-header">
+                    <button onclick="exitVault()" class="close-vault-btn">❌</button>
+                    <h3 id="vault-title">Bóveda de archivos</h3>
+                    <button onclick="toggleVaultMenu()" id="vault-menu-button">⋮</button>
+                </div>
+                <div class="vault-actions">
+                    <input type="file" id="file-input" style="display:none;" multiple accept="*/*">
+                    <button onclick="document.getElementById('file-input').click();" class="boton-naranja-operador">Ocultar Archivos</button>
+                </div>
+                <div class="folders-bar" id="folders-bar">
+                    <button class="folder-button" onclick="createFolder()">+ Crear Carpeta</button>
+                    <button class="folder-button active" onclick="selectFolder('Principal')">Principal</button>
+                </div>
+                <div class="gallery" id="file-gallery">
+                </div>
+            </div>
+
+            <div class="conversion-module" id="games-module">
+                <div class="games-header">
+                    <button onclick="exitGames()" class="close-game-btn"><i class="fas fa-times"></i></button>
+                    <h3>Juegos</h3>
+                </div>
+                <div class="games-menu" id="games-menu-list">
+                    <button class="game-button" onclick="showGame('tictactoe')">Tres en Raya</button>
+                    </div>
+                <div id="tictactoe-game">
+                    <h3 id="tictactoe-status">Turno de 'X'</h3>
+                    <div id="tictactoe-board"></div>
+                    <button id="tictactoe-reset" onclick="resetTicTacToe()">Reiniciar</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="menu-flotante" id="main-menu">
+            <button onclick="showHistoryMenu()">Historial</button>
+            <button onclick="showGamesModule()">Juegos</button>
+        </div>
+        
+        <div class="vault-menu" id="vault-menu">
+            <input type="file" id="import-input" style="display:none;" accept=".json">
+            <button onclick="exportVault()">Exportar Bóveda 📤</button>
+            <button onclick="document.getElementById('import-input').click();">Importar Bóveda 📥</button>
+        </div>
+
+        <div class="historial-menu" id="history-menu">
+            <h4>Historial</h4>
+            <div id="historial-items"></div>
+            <button onclick="hideHistoryMenu()" class="close-history-btn">Cerrar</button>
+        </div>
+
+        <div class="side-menu" id="side-menu">
+            <div class="side-menu-header">
+                 <button onclick="toggleSideMenu()">≡</button>
+            </div>
+            <h3>"OPCIONES"</h3>
+            <button onclick="toggleCalculatorView('normal')">Normal</button>
+            <button onclick="toggleCalculatorView('scientific')">Científica</button>
+            <span class="menu-section-title">"CALCULAR"</span>
+            <button onclick="showConversionModule('volume')">Volumen</button>
+            <button onclick="showConversionModule('mass')">Peso y Masa</button>
+            <button onclick="showConversionModule('length')">Longitud</button>
+            <button onclick="showConversionModule('temperature')">Temperatura</button>
+            <button onclick="showConversionModule('time')">Tiempo</button>
+            <button onclick="showConversionModule('data')">Datos</button>
+            <span class="menu-section-title">"OTRAS OPCIONES"</span>
+            <button onclick="alert('Funcionalidad de librería en desarrollo.')">Librería</button>
+        </div>
+    </div>
+    
+    <div id="file-modal" class="modal" onclick="closeModal(event)">
+        <span class="modal-close" onclick="closeModal(event)">&times;</span>
+        <div id="modal-content" class="modal-content"></div>
+    </div>
+    
+    
+<script src="script.js"></script>
+</body>
+</html>
