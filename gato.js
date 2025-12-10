@@ -1,5 +1,3 @@
-// --- Contenido de gato.js ---
-
 const defaultConfig = {
   background_color: "#000000",
   primary_color: "#EA7900",

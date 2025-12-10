@@ -542,14 +542,6 @@ if (closeLibraryViewBtn) {
     });
 }
 
-// -------------------------------------------------------------------
-// --- INICIO DE LÓGICA DE LA LIBRERÍA (PEGADA DEL SCRIPT DE LIBRERÍA) ---
-// -------------------------------------------------------------------
-
-// NOTA IMPORTANTE: Si subes esto a GitHub Pages en el futuro,
-// deberás reactivar la lógica de GITHUB_BASE_URL.
-// Por ahora, usamos solo rutas relativas.
-
 const SECTION_NAMES = {
     'aritmetica': 'Aritmética',
     'fracciones': 'Fracciones',
@@ -572,11 +564,8 @@ const SECTION_NAMES = {
     'aritmetica_suma': 'Suma',
 };
 
-// **MODIFICADO**: Se asume que tus PDFs están en una carpeta 'pdfs'
 const PDF_PATHS = {
-    'aritmetica_suma': './pdfs/La_suma.pdf', 
-    // Asegúrate de actualizar el resto de tus rutas PDF aquí si las tienes
-    // 'geometria_basica': './pdfs/geometria_basica.pdf',
+    'aritmetica_suma': 'La_suma.pdf', 
 };
 
 function generateSectionContent(sectionId) {
@@ -634,7 +623,6 @@ window.openSection = function(sectionId) {
     }
 }
 
-// **MODIFICADO**: Función para forzar la apertura del archivo local/relativo
 window.openDocument = function(documentId) {
     const url = PDF_PATHS[documentId];
 
@@ -643,9 +631,6 @@ window.openDocument = function(documentId) {
         alert(`El documento para ${name} aún no está disponible o la ruta es incorrecta.`);
         return;
     }
-    
-    // **CLAVE DE LA SOLUCIÓN**: Usar directamente la ruta relativa/local
-    // No hay detección de protocolo ni prefijo de GitHub.
     
     const pdfWindow = window.open(url, '_blank');
 
@@ -674,7 +659,6 @@ function initializeLibraryListeners() {
 
     const backBtn = detailView.querySelector('.back-btn');
     if (backBtn) {
-        // Aseguramos que el botón de regreso use la función correcta
         backBtn.onclick = window.goBackToMenuLibrary;
     }
 }
