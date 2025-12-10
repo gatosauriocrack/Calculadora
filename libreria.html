@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
     <style>
+        /* ESTILOS (sin cambios, omitidos para brevedad) */
         body {
             background-color: #000000;
             margin: 0;
@@ -49,6 +50,24 @@
             align-items: center;
             text-align: center;
             cursor: pointer;
+            position: relative;
+        }
+        
+        .book-card::after {
+            content: "\f1c1";
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 10px;
+            color: #E81A25;
+            opacity: 0.8;
+            pointer-events: none;
+        }
+        
+        .book-card.has-submenu::after {
+            content: "";
         }
 
         .book-cover-box {
@@ -81,15 +100,64 @@
             text-overflow: ellipsis;
             max-width: 100%;
         }
+
+        /* VISTA DETALLE PARA SUBMENÚS */
+        .hidden {
+            display: none !important;
+        }
+        
+        .detail-header {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #333;
+            margin-bottom: 10px;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: #EA7900;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 5px 10px;
+        }
+
+        .detail-title {
+            color: #EA7900;
+            font-size: 18px;
+            margin: 0 0 0 10px;
+        }
+        
+        .formula-list button {
+            display: block;
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            background-color: #222;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 4px;
+            text-align: left;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .formula-list button:hover {
+            background-color: #EA7900;
+            color: #000000;
+        }
     </style>
 </head>
 <body>
-        <main class="library-main-content">
-            
+    <main class="library-main-content">
+        
+        <div id="main-menu">
             <h2 class="level-title"><i class="fas fa-graduation-cap"></i> Básicas (Primaria / Secundaria)</h2>
             <div class="book-grid">
                 
-                <div class="book-card" onclick="openSection('aritmetica')">
+                <div class="book-card has-submenu" onclick="openSection('aritmetica')">
                     <div class="book-cover-box">
                         <i class="fas fa-plus-minus" style="font-size: 36px; color: #EA7900;"></i>
                     </div>
@@ -98,7 +166,7 @@
                     </div>
                 </div>
                 
-                <div class="book-card" onclick="openSection('fracciones')">
+                <div class="book-card has-submenu" onclick="openSection('fracciones')">
                     <div class="book-cover-box">
                          <i class="fas fa-divide" style="font-size: 36px; color: #EA7900;"></i>
                     </div>
@@ -263,10 +331,123 @@
                     </div>
                 </div>
             </div>
-            </main>
+        </div>
+        
+        <div id="detail-view" class="hidden">
+            <div class="detail-header">
+                <button class="back-btn" onclick="goBackToMenu()"><i class="fas fa-arrow-left"></i></button>
+                <h3 class="detail-title" id="detail-title"></h3>
+            </div>
+            
+            <div id="section-content" class="formula-list">
+                </div>
+        </div>
+
+    </main>
+    
     <script>
+        const mainMenu = document.getElementById('main-menu');
+        const detailView = document.getElementById('detail-view');
+        const detailTitle = document.getElementById('detail-title');
+        const sectionContent = document.getElementById('section-content');
+
+        // DICCIÓNARIOS DE DATOS
+        
+        const SECTION_NAMES = {
+            'aritmetica': 'Aritmética',
+            'fracciones': 'Fracciones',
+            'geometria_basica': 'Geometría Básica',
+            'aritmetica_suma': 'Suma', 
+            // Agrega el resto de nombres aquí...
+        };
+
+        // Mapeo de IDs a RUTAS DE ARCHIVOS PDF
+        const PDF_PATHS = {
+            'aritmetica_suma': 'La_suma.pdf', 
+            // 'geometria_basica': 'geometria_basica.pdf', // Ejemplo de PDF directo
+        };
+
+        // Función para generar el contenido específico de cada sección
+        function generateSectionContent(sectionId) {
+            let htmlContent = '';
+
+            switch (sectionId) {
+                case 'aritmetica':
+                    htmlContent = `
+                        <button onclick="openDocument('aritmetica_suma')">Suma</button>
+                        <button onclick="openDocument('aritmetica_resta')">Resta (Próx.)</button>
+                        <button onclick="openDocument('aritmetica_multiplicacion')">Multiplicación (Próx.)</button>
+                        <button onclick="openDocument('aritmetica_division')">División (Próx.)</button>
+                    `;
+                    break;
+                case 'fracciones':
+                    htmlContent = `
+                        <button onclick="openDocument('fracciones_suma_resta')">Suma y Resta de Fracciones</button>
+                        <button onclick="openDocument('fracciones_multiplicacion')">Multiplicación de Fracciones</button>
+                        <button onclick="openDocument('fracciones_division')">División de Fracciones</button>
+                    `;
+                    break;
+                default:
+                    htmlContent = `<p style="text-align: center; color: #999; margin-top: 20px;">No hay subsecciones para ${SECTION_NAMES[sectionId] || sectionId}. Documento no disponible. <br>¡Próximamente!</p>`;
+                    break;
+            }
+
+            sectionContent.innerHTML = htmlContent;
+        }
+        
+        // Lógica principal: Decide si abrir un PDF directo o un submenú
         function openSection(sectionId) {
-            alert(`Abriendo sección: ${sectionId}. Aquí iría la carga de fórmulas específicas para este tema.`);
+            
+            if (PDF_PATHS[sectionId]) {
+                openDocument(sectionId);
+                return;
+            }
+            
+            const needsSubmenu = ['aritmetica', 'fracciones'].includes(sectionId);
+
+            if (needsSubmenu) {
+                detailTitle.textContent = SECTION_NAMES[sectionId] || sectionId.toUpperCase();
+                generateSectionContent(sectionId);
+
+                mainMenu.classList.add('hidden');
+                detailView.classList.remove('hidden');
+            } else {
+                alert(`Documento de ${SECTION_NAMES[sectionId] || sectionId.toUpperCase()} no disponible.`);
+            }
+        }
+
+        // Función para abrir el PDF, compatible con la web y navegadores locales.
+        function openDocument(documentId) {
+            const url = PDF_PATHS[documentId];
+
+            if (url) {
+                // 1. Intentamos abrir en una nueva pestaña (_blank)
+                const pdfWindow = window.open(url, '_blank');
+                
+                // 2. Si el navegador (especialmente navegadores locales como QuickEdit) 
+                // bloquea o falla al abrir la nueva ventana, forzamos la redirección 
+                // de la ventana actual al PDF.
+                if (!pdfWindow || pdfWindow.closed || typeof pdfWindow.closed == 'undefined') {
+                    
+                    // Solo si la apertura en _blank falló, redirigimos la ventana actual
+                    window.location.href = url;
+                    
+                    // NOTA: Si esto sucede, el usuario debe usar el botón 'Atrás'
+                    // de su navegador para volver a la librería.
+                }
+                
+            } else {
+                // Alerta si el documento no está definido en PDF_PATHS
+                const name = SECTION_NAMES[documentId] || documentId.toUpperCase().replace(/_/g, ' ');
+                alert(`El documento para ${name} aún no está disponible o la ruta es incorrecta.`);
+            }
+        }
+
+        // Función para volver al menú principal
+        function goBackToMenu() {
+            detailView.classList.add('hidden');
+            mainMenu.classList.remove('hidden');
+            sectionContent.innerHTML = '';
         }
     </script>
 </body>
