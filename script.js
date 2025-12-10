@@ -35,7 +35,6 @@ const openFullscreenBtn = document.getElementById('open-fullscreen');
 const fullScreenView = document.getElementById('full-screen-view');
 const closeFullscreenViewBtn = document.getElementById('close-fullscreen-view');
 
-// Nuevas variables para la Librería
 const openLibraryBtn = document.getElementById('open-library-btn');
 const libraryView = document.getElementById('library-view');
 const closeLibraryViewBtn = document.getElementById('close-library-view');
@@ -498,10 +497,8 @@ closeFullscreenViewBtn.addEventListener('click', () => {
     fullScreenView.classList.add('hidden');
 });
 
-// --- Lógica para la Vista de Librería (Pantalla Completa) ---
-
 async function loadLibraryContent() {
-    if (libraryContentContainer.children.length > 0 && libraryContentContainer.querySelector('p').textContent !== 'Cargando librería...') {
+    if (libraryContentContainer.children.length > 0 && libraryContentContainer.querySelector('p')?.textContent !== 'Cargando librería...') {
         return;
     }
 
@@ -516,6 +513,8 @@ async function loadLibraryContent() {
         
         libraryContentContainer.innerHTML = html;
         
+        initializeLibraryListeners(); 
+
     } catch (error) {
         libraryContentContainer.innerHTML = `<p style="color: #FF0000; padding: 20px;">Error al cargar el contenido. Asegúrate de que 'libreria.html' existe.</p>`;
     }
@@ -541,4 +540,141 @@ if (closeLibraryViewBtn) {
     closeLibraryViewBtn.addEventListener('click', () => {
         libraryView.classList.add('hidden');
     });
+}
+
+// -------------------------------------------------------------------
+// --- INICIO DE LÓGICA DE LA LIBRERÍA (PEGADA DEL SCRIPT DE LIBRERÍA) ---
+// -------------------------------------------------------------------
+
+// NOTA IMPORTANTE: Si subes esto a GitHub Pages en el futuro,
+// deberás reactivar la lógica de GITHUB_BASE_URL.
+// Por ahora, usamos solo rutas relativas.
+
+const SECTION_NAMES = {
+    'aritmetica': 'Aritmética',
+    'fracciones': 'Fracciones',
+    'geometria_basica': 'Geometría Básica',
+    'algebra': 'Álgebra',
+    'trigonometria': 'Trigonometría',
+    'geometria_analitica': 'Geometría Analítica',
+    'estadistica': 'Estadística',
+    'logica': 'Lógica',
+    'fisica_basica': 'Física Básica',
+    'calculo_dif': 'Cálculo Diferencial',
+    'calculo_int': 'Cálculo Integral',
+    'matrices': 'Matrices',
+    'edo': 'Ecuaciones Diferenciales',
+    'discretas': 'Discretas',
+    'multivariable': 'Multivariable',
+    'analisis_real': 'Análisis Real',
+    'grafos': 'Teoría de Grafos',
+    'optimizacion': 'Optimización',
+    'aritmetica_suma': 'Suma',
+};
+
+// **MODIFICADO**: Se asume que tus PDFs están en una carpeta 'pdfs'
+const PDF_PATHS = {
+    'aritmetica_suma': './pdfs/La_suma.pdf', 
+    // Asegúrate de actualizar el resto de tus rutas PDF aquí si las tienes
+    // 'geometria_basica': './pdfs/geometria_basica.pdf',
+};
+
+function generateSectionContent(sectionId) {
+    let htmlContent = '';
+    const sectionContent = document.getElementById('section-content');
+
+    if (!sectionContent) return;
+
+    switch (sectionId) {
+        case 'aritmetica':
+            htmlContent = `
+                <button onclick="openDocument('aritmetica_suma')">Suma</button>
+                <button onclick="openDocument('aritmetica_resta')">Resta (Próx.)</button>
+                <button onclick="openDocument('aritmetica_multiplicacion')">Multiplicación (Próx.)</button>
+                <button onclick="openDocument('aritmetica_division')">División (Próx.)</button>
+            `;
+            break;
+        case 'fracciones':
+            htmlContent = `
+                <button onclick="openDocument('fracciones_suma_resta')">Suma y Resta de Fracciones</button>
+                <button onclick="openDocument('fracciones_multiplicacion')">Multiplicación de Fracciones</button>
+                <button onclick="openDocument('fracciones_division')">División de Fracciones</button>
+            `;
+            break;
+        default:
+            htmlContent = `<p style="text-align: center; color: #999; margin-top: 20px;">No hay subsecciones para ${SECTION_NAMES[sectionId] || sectionId}. Documento no disponible. <br>¡Próximamente!</p>`;
+            break;
+    }
+
+    sectionContent.innerHTML = htmlContent;
+}
+
+window.openSection = function(sectionId) {
+    const mainMenu = document.getElementById('main-menu');
+    const detailView = document.getElementById('detail-view');
+    const detailTitle = document.getElementById('detail-title');
+    
+    if (!mainMenu || !detailView || !detailTitle) return;
+
+    if (PDF_PATHS[sectionId]) {
+        openDocument(sectionId);
+        return;
+    }
+    
+    const needsSubmenu = ['aritmetica', 'fracciones'].includes(sectionId);
+
+    if (needsSubmenu) {
+        detailTitle.textContent = SECTION_NAMES[sectionId] || sectionId.toUpperCase();
+        generateSectionContent(sectionId);
+
+        mainMenu.classList.add('hidden');
+        detailView.classList.remove('hidden');
+    } else {
+        alert(`Documento de ${SECTION_NAMES[sectionId] || sectionId.toUpperCase()} no disponible.`);
+    }
+}
+
+// **MODIFICADO**: Función para forzar la apertura del archivo local/relativo
+window.openDocument = function(documentId) {
+    const url = PDF_PATHS[documentId];
+
+    if (!url) {
+        const name = SECTION_NAMES[documentId] || documentId.toUpperCase().replace(/_/g, ' ');
+        alert(`El documento para ${name} aún no está disponible o la ruta es incorrecta.`);
+        return;
+    }
+    
+    // **CLAVE DE LA SOLUCIÓN**: Usar directamente la ruta relativa/local
+    // No hay detección de protocolo ni prefijo de GitHub.
+    
+    const pdfWindow = window.open(url, '_blank');
+
+    if (!pdfWindow || pdfWindow.closed || typeof pdfWindow.closed == 'undefined') {
+        window.location.href = url;
+    }
+}
+
+window.goBackToMenuLibrary = function() {
+    const mainMenu = document.getElementById('main-menu');
+    const detailView = document.getElementById('detail-view');
+    const sectionContent = document.getElementById('section-content');
+    
+    if (!mainMenu || !detailView || !sectionContent) return;
+
+    detailView.classList.add('hidden');
+    mainMenu.classList.remove('hidden');
+    sectionContent.innerHTML = '';
+}
+
+function initializeLibraryListeners() {
+    const mainMenu = document.getElementById('main-menu');
+    const detailView = document.getElementById('detail-view');
+    
+    if (!mainMenu || !detailView) return; 
+
+    const backBtn = detailView.querySelector('.back-btn');
+    if (backBtn) {
+        // Aseguramos que el botón de regreso use la función correcta
+        backBtn.onclick = window.goBackToMenuLibrary;
+    }
 }
