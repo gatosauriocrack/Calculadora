@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
+    
+    <meta property="og:title" content="Calculadora y Convertidor Gatosauriocrack" />
+    <meta property="og:description" content="Calculadora Científica, Conversor de Unidades (Volumen, Masa, Temperatura, Tiempo)." />
+    <meta property="og:image" content="https://gatosauriocrack.github.io/Calculadora/Calculadora.png" />
+    <meta property="og:url" content="https://gatosauriocrack.github.io/Calculadora/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Gatosauriocrack Tools" />
+
+    <link rel="icon" type="image/png" href="https://gatosauriocrack.github.io/Calculadora/Calculadora.png">
+    
+    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="gato.css">
+	<link rel="stylesheet" href="FontAwesome.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</head>
+<body>
+    <div class="calculator">
+        <button type="button" class="menu-btn-≡ hamburger-btn" id="hamburger-btn" aria-label="Abrir Menú Lateral">
+            <i class="icon-Rayas"></i>
+        </button>
+        <button type="button" class="menu-btn-⋮ options-btn" id="options-btn" aria-label="Abrir Opciones Adicionales">
+            <i class="icon-Puntos"></i>
+        </button>
+        <div class="calculator-screen-container">
+            <span class="expression-line"></span>
+            <span class="result-line">0</span>
+        </div>
+        <div class="calculator-keys">
+            <button type="button" class="aux-btn" value="backspace">⌫</button>
+            <button type="button" class="all-clear" value="all-clear">AC</button>
+            <button type="button" class="aux-btn" value="sign">±</button>
+            <button type="button" class="operator" value="×">×</button>
+            <button type="button" value="7">7</button>
+            <button type="button" value="8">8</button>
+            <button type="button" value="9">9</button>
+            <button type="button" class="operator" value="+">+</button>
+            <button type="button" value="4">4</button>
+            <button type="button" value="5">5</button>
+            <button type="button" value="6">6</button>
+            <button type="button" class="operator" value="-">-</button>
+            <button type="button" value="1">1</button>
+            <button type="button" value="2">2</button>
+            <button type="button" value="3">3</button>
+            <button type="button" class="operator" value="÷">÷</button>
+            <button type="button" class="count-btn" value="count"></button>
+            <button type="button" value="0">0</button>
+            <button type="button" class="decimal" value=".">.</button>
+            <button type="button" class="equal-sign operator" value="=">=</button>
+        </div>
+    </div>
+    <div class="side-menu hidden" id="side-menu">
+        <button id="close-side-menu" class="close-menu-btn" aria-label="Cerrar Menú Lateral">
+            <i class="icon-uniE910"></i>
+        </button>
+        <h3>OPCIONES</h3>
+            <button>Normal</button>
+            <button>Científica</button>
+        <h3>CALCULAR</h3>
+            <button>Volumen</button>
+            <button>Peso y Masa</button>
+            <button>Longitud</button>
+            <button>Temperatura</button>
+            <button>Tiempo</button>
+            <button>Datos</button>
+        <h3>OTRAS OPCIONES</h3>
+            <button id="open-library-btn">Librería</button>
+    </div>
+    <div class="modal-options-overlay hidden" id="modal-options-overlay">
+        <div class="modal-options" id="modal-options">
+            <button type="button" class="option-btn" id="open-history">Historial de Operaciones</button>
+            <button type="button" class="option-btn" id="open-fullscreen">Juegos</button>
+        </div>
+    </div>
+    <div class="history-floating-menu hidden" id="history-floating-menu">
+        <header>
+            <h3>Historial</h3>
+            <button type="button" class="aux-btn" id="close-history-menu">X</button>
+        </header>
+        <div class="history-content">
+            <p>Aquí se verá el historial de operaciones.</p>
+        </div>
+    </div>
+    <div class="full-screen-view hidden" id="full-screen-view">
+        <header>
+            <h2>Juegos 🎮</h2>
+            <button type="button" class="close-rect-btn" id="close-fullscreen-view" aria-label="Cerrar Juegos">
+                <i class="icon-uniE910"></i>
+            </button>
+        </header>
+        <div class="game-container">
+            <div class="status" id="status">
+                Turno: <span id="player-turn">X</span>
+            </div>
+            <div class="board" id="board">
+                <div class="cell" data-index="0"></div>
+                <div class="cell" data-index="1"></div>
+                <div class="cell" data-index="2"></div>
+                <div class="cell" data-index="3"></div>
+                <div class="cell" data-index="4"></div>
+                <div class="cell" data-index="5"></div>
+                <div class="cell" data-index="6"></div>
+                <div class="cell" data-index="7"></div>
+                <div class="cell" data-index="8"></div>
+            </div>
+            <button class="reset-button" id="reset-button">REINICIAR</button>
+        </div>
+        <div class="message-overlay" id="message-overlay"></div>
+        <h2>Descarga estos otros juegos si son de tu interés. ↓ </h2>
+        <a href="https://ko-fi.com/gatosauriocrack/goal?g=0" target="_blank" class="support-button">
+            <i class="fas fa-mug-hot"></i> Apoyame en lo que hago
+        </a>
+        <p>¡¡La descarga será inmediata!!</p>
+        <div class="app-list-download">
+            <div class="app-item-download">
+                <span class="app-name-icon">Snake <i class="icon-icono-snake" style="font-size: 1.5em; color: #EA7900;"></i></span>
+                <div class="download-buttons">
+                    <a href="https://gatosauriocrack.github.io/Web/Apk/snake1.5.apk" class="download-btn apk-btn" target="_blank">
+                        <i class="fab fa-android"></i> APK</a>
+                </div>
+            </div>
+            <div class="app-item-download">
+                <span class="app-name-icon">Buscaminas <i class="fas fa-flag" style="color: #E81A25;"></i></span>
+                <div class="download-buttons">
+                    <a href="https://gatosauriocrack.github.io/Web/Apk/Buscaminas1.0.apk" class="download-btn apk-btn" target="_blank">
+                        <i class="fab fa-android"></i> APK</a>
+                </div>
+            </div>
+            <div class="app-item-download">
+                <span class="app-name-icon">Tetris <i class="fas fa-cube" style="color: #9b59b6;"></i></span>
+                <div class="download-buttons">
+                    <a href="https://gatosauriocrack.github.io/Web/Apk/Tetris1.0.apk" class="download-btn apk-btn" target="_blank">
+                        <i class="fab fa-android"></i> APK</a>
+                </div>
+            </div>
+            <div class="app-item-download">
+                <span class="app-name-icon">Aleatory <i class="fas fa-random" style="color: #4dc2c2;"></i></span>
+                <div class="download-buttons">
+                    <a href="https://gatosauriocrack.github.io/Web/Apk/Aleatory1.0.apk" class="download-btn apk-btn" target="_blank">
+                        <i class="fab fa-android"></i> APK
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="full-screen-view hidden" id="library-view">
+        <header>
+            <h2></h2>
+            <button type="button" class="close-rect-btn" id="close-library-view" aria-label="Cerrar Librería">
+                <i class="icon-uniE910"></i>
+            </button>
+        </header>
+        <div class="library-content-container" id="library-content-container">
+            <p>Cargando librería...</p>
+        </div>
+    </div>
+    <script src="script.js"></script>
+    <script src="gato.js"></script>
+</body>
+</html>
