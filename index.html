@@ -15,13 +15,15 @@
     <link rel="icon" type="image/png" href="https://gatosauriocrack.github.io/Calculadora/Calculadora.png">
     
     <link rel="stylesheet" href="style.css"> 
+	<link rel="stylesheet" href="style2.css"> 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="gato.css">
 	<link rel="stylesheet" href="FontAwesome.css">
+		
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 </head>
 <body>
-    <div class="calculator">
+    <div class="calculator" id="calculator-app">
         <button type="button" class="menu-btn-≡ hamburger-btn" id="hamburger-btn" aria-label="Abrir Menú Lateral">
             <i class="icon-Rayas"></i>
         </button>
@@ -32,7 +34,7 @@
             <span class="expression-line"></span>
             <span class="result-line">0</span>
         </div>
-        <div class="calculator-keys">
+        <div class="calculator-keys" id="calculator-buttons">
             <button type="button" class="aux-btn" value="backspace">⌫</button>
             <button type="button" class="all-clear" value="all-clear">AC</button>
             <button type="button" class="aux-btn" value="sign">±</button>
@@ -60,17 +62,18 @@
             <i class="icon-uniE910"></i>
         </button>
         <h3>OPCIONES</h3>
-            <button>Normal</button>
-            <button>Científica</button>
+            <button id="mode-standard-btn">Normal</button>
+            <button id="mode-scientific-btn">Científica</button>
         <h3>CALCULAR</h3>
-            <button>Volumen</button>
-            <button>Peso y Masa</button>
-            <button>Longitud</button>
-            <button>Temperatura</button>
-            <button>Tiempo</button>
-            <button>Datos</button>
+            <button onclick="openConverter('Volumen')">Volumen</button>
+            <button onclick="openConverter('PesoMasa')">Peso y Masa</button>
+            <button onclick="openConverter('Longitud')">Longitud</button>
+            <button onclick="openConverter('Temperatura')">Temperatura</button>
+            <button onclick="openConverter('Tiempo')">Tiempo</button>
+            <button onclick="openConverter('Datos')">Datos</button>
         <h3>OTRAS OPCIONES</h3>
             <button id="open-library-btn">Librería</button>
+            <button id="open-info-btn"><i class="fas fa-info-circle"></i> Informacion</button>
     </div>
     <div class="modal-options-overlay hidden" id="modal-options-overlay">
         <div class="modal-options" id="modal-options">
@@ -161,7 +164,71 @@
             <p>Cargando librería...</p>
         </div>
     </div>
+    
+    <div class="full-screen-view hidden" id="info-view">
+        <header>
+            <h2>Información</h2>
+            <button type="button" class="close-rect-btn" id="close-info-view" aria-label="Cerrar Información">
+                <i class="icon-uniE910"></i>
+            </button>
+        </header>
+        <div class="info-content-container" style="padding: 20px; max-width: 600px; margin: auto;">
+            <p><strong>© Gatosauriocrack.</strong> Todos los derechos reservados</p>
+            <p>Esta es una calculadora científica y convertidora de unidades.</p>
+            <h3>Funcionalidades:</h3>
+            <ul>
+                <li>Calculadora Estándar y Científica.</li>
+                <li>Conversión de Volumen, Masa, Longitud, Temperatura, Tiempo y Datos.</li>
+                <li>Juegos simples y Librería</li>
+                <li>Y boveda de archivos</li>
+            </ul>
+            <p style="text-align: center; margin-top: 30px;">¡Gracias por usar la app!</p>
+            <a href="https://ko-fi.com/gatosauriocrack/goal?g=0" target="_blank" class="support-button">
+                 <i class="fas fa-mug-hot"></i> Apoyame en lo que hago
+            </a>
+            <hr style='width: 100%; margin: 15px 0; border-top: 1px solid var(--color-naranja-principal); opacity: 0.3;'>
+            <p>Puedes descubrir más juegos y contenido aquí:</p>
+            <a href='https://gatosauriocrack.github.io/Web/' class='info-btn-action' target="_blank">
+                <i class='fa-solid fa-gamepad'></i> Más Juegos y Contenido
+            </a>
+        </div>
+    </div>
+
+    <div class="full-screen-view hidden" id="converter-view">
+        <header>
+            <h2 id="converter-title">Convertidor de Unidades</h2>
+            <button type="button" class="close-rect-btn" id="close-converter-view" aria-label="Cerrar Convertidor">
+                <i class="icon-uniE910"></i>
+            </button>
+        </header>
+        <div class="converter-container">
+            <div class="input-group">
+                <input type="number" id="input-value" value="1" placeholder="Valor a convertir" oninput="convertUnit()">
+                <select id="select-from" onchange="convertUnit()"></select>
+            </div>
+            <div class="switch-button-container">
+                <button id="switch-units-btn" aria-label="Cambiar Unidades" onclick="switchUnits()">
+                    <i class="fas fa-arrows-alt-v"></i>
+                </button>
+            </div>
+            <div class="output-group">
+                <input type="text" id="output-value" readonly placeholder="Resultado">
+                <select id="select-to" onchange="convertUnit()"></select>
+            </div>
+            <p class="conversion-rate-display" id="conversion-rate-display"></p>
+        </div>
+        <div class="instructions-section">
+            <h3>Instrucciones:</h3>
+            <ul>
+                <li>Introduce el valor a convertir.</li>
+                <li>Selecciona las unidades De y A.</li>
+                <li>El resultado aparecerá automáticamente.</li>
+            </ul>
+        </div>
+    </div>
+    
     <script src="script.js"></script>
+    <script src="script2.js"></script>
     <script src="gato.js"></script>
 </body>
 </html>
